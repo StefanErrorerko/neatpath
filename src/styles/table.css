@@ -1,0 +1,36 @@
+.url-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .url-table th {
+    background-color: #f8f9fa;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #666;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .url-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .url-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .url-link {
+    color: #4169E1;
+    text-decoration: none;
+  }
+  
+  .url-link:hover {
+    text-decoration: underline;
+  }
