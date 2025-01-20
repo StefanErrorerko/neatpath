@@ -1,35 +1,67 @@
-// src/components/Navbar.js
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import LogoutIcon from '@mui/icons-material/Logout';
 import '../styles/navbar.css';
 
-function UserIcon() {
-  return (
-    <svg 
-      viewBox="0 0 24 24" 
-      width="20" 
-      height="20" 
-      stroke="currentColor" 
-      fill="none" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}
-
 export default function Navbar() {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = () => {
+    const token = localStorage.getItem('sessionToken');
+    setIsAuthenticated(!!token);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('sessionToken');
+      const response = await fetch('https://localhost:7251/api/v1/Auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: token
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Clear session data
+      localStorage.removeItem('sessionToken');
+      localStorage.removeItem('sessionExpires');
+      localStorage.removeItem('user');
+      
+      // Clear session cookie
+      document.cookie = 'sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      
+      window.location.reload();
+    } catch (err) {
+      setError('Failed to logout: ' + err.message);
+      console.error('Logout error:', err);
+    }
+  };
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <div className="logo-container">
-          <Link to="/" className="logo-link">
+          <Link to="/" className="logo">
             <div className="logo-circle">
-              <span className="logo-symbol">NP</span>
+              <span className="logo-symbol">NeatPath</span>
             </div>
-            <span className="logo-text">NeatPath</span>
           </Link>
         </div>
         
@@ -40,12 +72,23 @@ export default function Navbar() {
           >
             About
           </Link>
-          <Link 
-            to="/login" 
-            className="user-button"
-          >
-            <UserIcon />
-          </Link>
+          {isAuthenticated ? (
+            <button 
+              className="auth-button"
+              onClick={handleLogout}
+              title="Logout"
+            >
+              <LogoutIcon />
+            </button>
+          ) : (
+            <button 
+              className="auth-button"
+              onClick={handleLoginClick}
+              title="Login"
+            >
+              <PersonOutlineIcon />
+            </button>
+          )}
         </div>
       </div>
     </nav>

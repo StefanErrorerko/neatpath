@@ -1,77 +1,156 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import '../styles/urldetails.css';
+import '../styles/index.css'
 
 export default function UrlDetails() {
-    const { urlId } = useParams();
-    const [urlDetails, setUrlDetails] = useState(null);
-    const userRole = localStorage.getItem('userRole');
-  
-    useEffect(() => {
-      // Fetch URL details from API
-      const fetchUrlDetails = async () => {
-        try {
-          const response = await fetch(`/api/urls/${urlId}`);
-          const data = await response.json();
-          setUrlDetails(data);
-        } catch (error) {
-          console.error('Error fetching URL details:', error);
+  const {hash} = useParams();
+  const [urlDetails, setUrlDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isLoggedIn = !!localStorage.getItem('sessionToken');
+
+  useEffect(() => {
+    fetchUrlDetails();
+  }, [hash]);
+
+  const fetchUrlDetails = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`https://localhost:7251/api/v1/Url/hash/${hash}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         }
-      };
-  
-      fetchUrlDetails();
-    }, [urlId]);
-  
-    if (!urlDetails) {
-      return <div>Loading...</div>;
+      });
+
+      if (!response.ok) {
+        throw new Error(`URL not found (${response.status})`);
+      }
+
+      const data = await response.json();
+      console.log(data)
+      setUrlDetails(data);
+    } catch (error) {
+      setError(error.message);
+      console.error('Error fetching URL details:', error);
+    } finally {
+      setIsLoading(false);
     }
-  
+  };
+
+  if (isLoading) {
+    return <div className="loading-container">Loading...</div>;
+  }
+
+  if (error) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="page-container">
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <div className="bg-white shadow rounded-lg p-6">
-            <h1 className="text-2xl font-bold mb-4">URL Details</h1>
-            
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-sm font-medium text-gray-500">Original URL</h2>
-                <p className="mt-1">{urlDetails.originalUrl}</p>
-              </div>
-              
-              <div>
-                <h2 className="text-sm font-medium text-gray-500">Shortened URL</h2>
-                <p className="mt-1">{urlDetails.shortUrl}</p>
-              </div>
-              
-              <div>
-                <h2 className="text-sm font-medium text-gray-500">Created At</h2>
-                <p className="mt-1">{new Date(urlDetails.createdAt).toLocaleDateString()}</p>
-              </div>
-              
-              <div>
-                <h2 className="text-sm font-medium text-gray-500">Click Count</h2>
-                <p className="mt-1">{urlDetails.clickCount}</p>
-              </div>
-            </div>
-  
-            {/* Admin/Owner Controls */}
-            {(userRole === 'admin' || urlDetails.userId === localStorage.getItem('userId')) && (
-              <div className="mt-6 space-x-4">
-                <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                  Delete URL
-                </button>
-                {userRole === 'admin' && (
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Edit URL
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        </main>
+        <div className="error-container">
+          <p className="error-message">Error: {error}</p>
+        </div>
         <Footer />
       </div>
     );
   }
+
+  if (!urlDetails) {
+    return (
+      <div className="page-container">
+        <Navbar />
+        <div className="error-container">
+          <p className="error-message">URL not found</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+// Add the delete handler function
+const handleDelete = async () => {
+  try {
+    const token = localStorage.getItem('sessionToken');
+    const response = await fetch(`https://localhost:7251/api/v1/Url/${urlDetails.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete URL (${response.status})`);
+    }
+
+    navigate('/');
+  } catch (error) {
+    console.error('Error deleting URL:', error);
+    setError('Failed to delete URL: ' + error.message);
+  }
+};
+
+  return (
+    <div className="page-container">
+      <Navbar />
+      <main className="main-content">
+        <div className="details-card">
+          <h1 className="details-title">URL Details</h1>
+          
+          <div className="details-grid">
+            <div className="detail-item">
+              <h2 className="detail-label">Original URL</h2>
+              <a href={urlDetails.originalUrl} className="detail-value url-link">
+                {urlDetails.originalUrl}
+              </a>
+            </div>
+            
+            <div className="detail-item">
+              <h2 className="detail-label">Shortened URL</h2>
+              <a href={urlDetails.shortUrl} className="detail-value url-link">
+                {urlDetails.shortUrl}
+              </a>
+            </div>
+            
+            <div className="detail-item">
+              <h2 className="detail-label">Hash</h2>
+              <p className="detail-value">{urlDetails.hash}</p>
+            </div>
+
+            <div className="detail-item">
+              <h2 className="detail-label">Created By</h2>
+              <p className="detail-value creator-email">{urlDetails.user?.username || 'Anonymous'}</p>
+            </div>
+
+            <div className="detail-item">
+              <h2 className="detail-label">Created</h2>
+              <p className="detail-value">{new Date(urlDetails.createdAt).toLocaleDateString()}</p>
+            </div>
+
+            <div className="detail-item">
+              <h2 className="detail-label">Click Count</h2>
+              <p className="detail-value">{urlDetails.clickCount}</p>
+            </div>
+          </div>
+
+          <div className="action-buttons">
+            {isLoggedIn && user && urlDetails.user && user.id === urlDetails.user.id && (
+              <button 
+                className="transparent-delete-button"
+                onClick={handleDelete}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+          
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+}

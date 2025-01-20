@@ -1,4 +1,3 @@
-// src/components/Footer.js
 import '../styles/footer.css';
 
 export default function Footer() {

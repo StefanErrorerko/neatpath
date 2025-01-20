@@ -1,11 +1,12 @@
-// src/App.js
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
-//import Login from './pages/Login';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import UrlDetails from './pages/UrlDetails';
+import Register from './pages/Register';
 
+// ???
 // Protected Route Component
 function ProtectedRoute({ children }) {
   // Check if user is authenticated
@@ -19,6 +20,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+//???
 // Admin Route Component
 function AdminRoute({ children }) {
   const isAuthenticated = localStorage.getItem('token') !== null;
@@ -40,7 +42,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
-      {/* <Route path="/login" element={<Login />} /> */}
+      <Route path="/login" element={<Login />} />
+      <Route path='/register' element={<Register />} />
 
       <Route 
         path="/dashboard" 
@@ -52,7 +55,7 @@ function App() {
       />
       
       <Route 
-        path="/url/:urlId" 
+        path="/url/:hash" 
         element={
           <ProtectedRoute>
             <UrlDetails />
@@ -60,6 +63,7 @@ function App() {
         } 
       />
 
+      {/* Handling not found page */}
       <Route path="*" element={
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
