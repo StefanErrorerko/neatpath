@@ -74,7 +74,6 @@ export default function UrlDetails() {
     );
   }
 
-// Add the delete handler function
 const handleDelete = async () => {
   try {
     const token = localStorage.getItem('sessionToken');

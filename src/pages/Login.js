@@ -61,15 +61,11 @@ const LoginPage = () => {
 
       const data = await response.json();
 
-      // Store session data
       localStorage.setItem('sessionToken', data.token);
       localStorage.setItem('sessionExpires', data.expiresAt);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Optional: Set cookie as alternative
       document.cookie = `sessionToken=${data.token}; expires=${new Date(data.expiresAt).toUTCString()}; path=/`;
-
-      // Redirect to home page
       navigate('/');
     } catch (err) {
       setError('An error occurred during login. Please try again.');

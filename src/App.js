@@ -2,26 +2,19 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
 import UrlDetails from './pages/UrlDetails';
 import Register from './pages/Register';
 
-// ???
-// Protected Route Component
 function ProtectedRoute({ children }) {
-  // Check if user is authenticated
   const isAuthenticated = localStorage.getItem('token') !== null;
   
   if (!isAuthenticated) {
-    // Redirect to login page with return url
     return <Navigate to="/login" replace state={{ from: window.location.pathname }} />;
   }
 
   return children;
 }
 
-//???
-// Admin Route Component
 function AdminRoute({ children }) {
   const isAuthenticated = localStorage.getItem('token') !== null;
   const userRole = localStorage.getItem('userRole');
@@ -44,15 +37,6 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path='/register' element={<Register />} />
-
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
       
       <Route 
         path="/url/:hash" 

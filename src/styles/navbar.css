@@ -25,9 +25,8 @@
   }
 }
 
-/* Add margin to the main content to prevent overlap */
 .main-container {
-  margin-top: 80px; /* Adjust based on your navbar height */
+  margin-top: 80px;
 }
 
 .navbar-container {

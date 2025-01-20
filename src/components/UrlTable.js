@@ -1,4 +1,3 @@
-// src/components/UrlTable.js
 import { useNavigate } from 'react-router-dom';
 import RemoveIcon from '@mui/icons-material/Remove';
 import '../styles/table.css';
@@ -7,6 +6,8 @@ export default function UrlTable({ urls }) {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
   const isLoggedIn = !!localStorage.getItem('sessionToken');
+
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const extractHash = (shortUrl) => {
     return shortUrl.split('/').pop();
@@ -25,7 +26,7 @@ export default function UrlTable({ urls }) {
     
     try {
       const token = localStorage.getItem('sessionToken');
-      const response = await fetch(`https://localhost:7251/api/v1/Url/${urlId}`, {
+      const response = await fetch(apiUrl + `Url/${urlId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -36,9 +37,7 @@ export default function UrlTable({ urls }) {
       if (!response.ok) {
         throw new Error(`Failed to delete URL (${response.status})`);
       }
-  
-      // You might want to refresh the URLs list after successful deletion
-      // This depends on how you manage your state
+
       window.location.reload();
     } catch (error) {
       console.error('Error deleting URL:', error);

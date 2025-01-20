@@ -76,15 +76,11 @@ const Register = () => {
 
       const data = await response.json();
 
-      // Store session data
       localStorage.setItem('sessionToken', data.token);
       localStorage.setItem('sessionExpires', data.expiresAt);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Set session cookie
       document.cookie = `sessionToken=${data.token}; expires=${new Date(data.expiresAt).toUTCString()}; path=/`;
-
-      // Redirect to home
       navigate('/');
     } catch (err) {
       setError('An error occurred during registration. Please try again.');
