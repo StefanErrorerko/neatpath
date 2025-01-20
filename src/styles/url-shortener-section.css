@@ -1,0 +1,125 @@
+/* URL Shortener Section */
+.url-shortener {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .url-input-container {
+    margin-top: 1rem;
+  }
+  
+  .relative {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .url-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: white;
+  }
+  
+  .url-input:focus {
+    outline: none;
+    border-color: #4169E1;
+    box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+  }
+  
+  .url-input.error {
+    border-color: #ef4444;
+  }
+  
+  .shorten-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: #4169E1;
+    color: white;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  
+  .shorten-button:hover:not(:disabled) {
+    background-color: #2749c9;
+    transform: scale(1.05);
+  }
+  
+  .shorten-button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+  }
+  
+  .result-container {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    background: white;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  
+  .result-container.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .input-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+  
+  .error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+  
+  .result-info {
+    margin-top: 0.75rem;
+  }
+  
+  .shortened-url {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1e293b;
+    word-break: break-all;
+  }
+  
+  .url-details {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+  
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
