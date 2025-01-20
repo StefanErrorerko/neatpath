@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/register.css';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -93,6 +94,7 @@ const Register = () => {
 
   return (
     <div className="page-container">
+        <BackgroundDecorations />
       <Navbar />
       <div className="register-container">
         <main className="register-main">

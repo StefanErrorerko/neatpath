@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import '../styles/urldetails.css';
 import '../styles/index.css'
+import BackgroundDecorations from "../components/BackgroundDecorations";
 
 export default function UrlDetails() {
   const {hash} = useParams();
@@ -98,6 +99,7 @@ const handleDelete = async () => {
 
   return (
     <div className="page-container">
+      <BackgroundDecorations />
       <Navbar />
       <main className="main-content">
         <div className="details-card">

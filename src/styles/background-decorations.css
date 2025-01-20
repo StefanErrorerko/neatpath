@@ -1,0 +1,52 @@
+/* Increase opacity and adjust positions of decorative elements */
+.bg-decoration-1 {
+    position: absolute;  /* Changed from fixed to absolute */
+    top: 10%;           /* Adjusted position */
+    right: -10%;
+    width: 600px;       /* Fixed size instead of vw */
+    height: 600px;
+    background: radial-gradient(circle at center,
+      rgba(255, 209, 220, 0.2),    /* Increased opacity */
+      rgba(173, 216, 230, 0.3),    /* Increased opacity */
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .bg-decoration-2 {
+    position: absolute;  /* Changed from fixed to absolute */
+    bottom: 10%;        /* Adjusted position */
+    left: -5%;
+    width: 700px;       /* Fixed size instead of vw */
+    height: 700px;
+    background: radial-gradient(circle at center,
+      rgba(173, 216, 230, 0.8),    /* Increased opacity */
+      rgba(255, 209, 220, 0.5),    /* Increased opacity */
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .bg-decoration-3 {
+    position: absolute;  /* Changed from fixed to absolute */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;       /* Fixed size instead of vw */
+    height: 500px;
+    background: radial-gradient(circle at center,
+      rgba(240, 219, 255, 0.55),   /* Increased opacity */
+      rgba(173, 216, 230, 0.45),   /* Increased opacity */
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }

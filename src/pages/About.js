@@ -2,10 +2,12 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/about.css';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 export default function About() {
   return (
     <div className="page-container">
+      <BackgroundDecorations />
       <Navbar />
       
       <main className="main-container">

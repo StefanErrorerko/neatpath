@@ -5,6 +5,7 @@ import UrlShortenerSection from '../components/UrlShortenerSection';
 import Footer from '../components/Footer';
 import '../styles/home.css';
 import '../styles/index.css';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 export default function Home() {
   const [urls, setUrls] = useState([]);
@@ -12,7 +13,7 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const apiUrl = process.env.REACT_APP_API_URL
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     checkAuth();
@@ -50,8 +51,10 @@ export default function Home() {
 
   return (
     <div className="page-container">
+      <BackgroundDecorations />
+
       <Navbar />
-      <main className="main-container">
+      <main className="home-container">
         <div className="hero-section">
           <h1 className="hero-title">
             Hi there!
@@ -69,6 +72,8 @@ export default function Home() {
         />
 
         <div className="mt-8">
+        <div className="bg-decoration-1"></div>
+
           <h2 className="hero-title">
             Recently Shortened URLs
           </h2>

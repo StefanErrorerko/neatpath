@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/login.css';
 import '../styles/index.css';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const LoginPage = () => {
 
   return (
     <div className="page-container">
+      <BackgroundDecorations />
       <Navbar />
       <div className='login-container'>
         <main className="login-main">
