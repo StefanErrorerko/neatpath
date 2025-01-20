@@ -12,6 +12,8 @@ const Register = () => {
   });
   const [error, setError] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL
+
   const validatePassword = (password) => {
     const minLength = password.length >= 6 && password.length <= 50;
     const hasUpperCase = /[A-Z]/.test(password);
@@ -50,7 +52,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch('https://localhost:7251/api/v1/Auth/register', {
+      const response = await fetch(apiUrl + 'Auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

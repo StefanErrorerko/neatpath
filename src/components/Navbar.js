@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../styles/navbar.css';
@@ -7,10 +7,25 @@ import '../styles/navbar.css';
 export default function Navbar() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [error, setError] = useState(null);
+
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const navbar = document.querySelector('.navbar');
+      if (!navbar) return;
+
+      setIsScrolled(true);
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const checkAuth = () => {
@@ -21,7 +36,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('sessionToken');
-      const response = await fetch('https://localhost:7251/api/v1/Auth/logout', {
+      const response = await fetch(apiUrl + 'Auth/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,31 +69,37 @@ export default function Navbar() {
     navigate('/login');
   };
 
+  const handleAboutClick = () => {
+    navigate('/about');
+  };
+
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>      
       <div className="navbar-container">
         <div className="logo-container">
-          <Link to="/" className="logo">
-            <div className="logo-circle">
-              <span className="logo-symbol">NeatPath</span>
-            </div>
-          </Link>
+          <button onClick={handleHomeClick} className="logo-button">
+            <span className="logo-symbol">NeatPath</span>
+          </button>
         </div>
         
         <div className="nav-links">
-          <Link 
-            to="/about" 
-            className="about-link"
+          <span 
+            className="about-text-link"
+            onClick={handleAboutClick}
           >
             About
-          </Link>
+          </span>
           {isAuthenticated ? (
             <button 
               className="auth-button"
               onClick={handleLogout}
               title="Logout"
             >
-              <LogoutIcon />
+              <LogoutIcon size={20} />
             </button>
           ) : (
             <button 
@@ -86,7 +107,7 @@ export default function Navbar() {
               onClick={handleLoginClick}
               title="Login"
             >
-              <PersonOutlineIcon />
+              <PersonOutlineIcon size={20} />
             </button>
           )}
         </div>

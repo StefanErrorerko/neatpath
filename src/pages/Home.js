@@ -12,6 +12,8 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL
+
   useEffect(() => {
     checkAuth();
     fetchUrls();
@@ -25,7 +27,7 @@ export default function Home() {
   const fetchUrls = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('https://localhost:7251/api/v1/Url', {
+      const response = await fetch(apiUrl + 'Url', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

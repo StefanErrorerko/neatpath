@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import '../styles/home.css';
+import '../styles/url-shortener-section.css';
 
 const UrlShortenerSection = ({ isAuthenticated, onUrlShortened, urls, setUrls }) => {
   const [url, setUrl] = useState('');
@@ -8,6 +8,11 @@ const UrlShortenerSection = ({ isAuthenticated, onUrlShortened, urls, setUrls })
   const [isProcessing, setIsProcessing] = useState(false);
   const [shortenedData, setShortenedData] = useState(null);
   const [isRotated, setIsRotated] = useState(false);
+  
+  const apiUrl = process.env.REACT_APP_API_URL + 'Url';
+  const headers = {
+    'Content-Type': 'application/json'
+  }
 
   const validateUrl = (value) => {
     try {
@@ -32,28 +37,23 @@ const UrlShortenerSection = ({ isAuthenticated, onUrlShortened, urls, setUrls })
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       const token = localStorage.getItem('sessionToken');
-      
-      const response = await fetch('https://localhost:7251/api/v1/Url', {
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: headers,
         body: JSON.stringify({
           originalUrl: url,
           userId: user?.id
         })
       });
 
-      console.log(response)
-
-      if (!response.ok && response.status === 409) throw new Error('This Url has already been processed.');
+      if (!response.ok && response.status === 409) 
+        throw new Error('This Url has already been processed.');
       
       const data = await response.json();
       setShortenedData(data);
       setIsRotated(true);
       
-      // Update URLs list
       if (Array.isArray(urls)) {
         setUrls([data, ...urls]);
       }

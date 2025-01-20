@@ -13,6 +13,8 @@ const LoginPage = () => {
   });
   const [error, setError] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData(prev => ({
@@ -34,7 +36,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await fetch('https://localhost:7251/api/v1/Auth/login', {
+      const response = await fetch(apiUrl + 'Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

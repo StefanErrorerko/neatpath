@@ -14,6 +14,8 @@ export default function UrlDetails() {
   const user = JSON.parse(localStorage.getItem('user'));
   const isLoggedIn = !!localStorage.getItem('sessionToken');
 
+  const apiUrl = process.env.REACT_APP_API_URL
+
   useEffect(() => {
     fetchUrlDetails();
   }, [hash]);
@@ -21,7 +23,7 @@ export default function UrlDetails() {
   const fetchUrlDetails = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`https://localhost:7251/api/v1/Url/hash/${hash}`, {
+      const response = await fetch(apiUrl + `Url/hash/${hash}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +77,7 @@ export default function UrlDetails() {
 const handleDelete = async () => {
   try {
     const token = localStorage.getItem('sessionToken');
-    const response = await fetch(`https://localhost:7251/api/v1/Url/${urlDetails.id}`, {
+    const response = await fetch(apiUrl + `Url/${urlDetails.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
